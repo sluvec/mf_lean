@@ -1,6 +1,6 @@
 // Trigger re-deployment
 import { state, setState, subscribe } from './state/store.js';
-import { getAllPCs, createPC } from './services/dataService.js';
+import { getAllPCs, createPC, updatePC, deletePC } from './services/dataService.js';
 import Dashboard from './components/Dashboard.js';
 import PCForm from './components/PCForm.js';
 
@@ -66,6 +66,28 @@ subscribe(() => {
         navigateTo(currentPage);
     }
 });
+
+// Handle CRUD actions from within the app container
+appElement.addEventListener('click', async (e) => {
+    const target = e.target;
+    const action = target.dataset.action;
+    const id = target.dataset.id;
+
+    if (!action || !id) return;
+
+    if (action === 'edit') {
+        await updatePC(id, { company: 'Updated Test Company' });
+        loadDashboardData(); // Refresh list
+    }
+
+    if (action === 'delete') {
+        if (confirm('Are you sure you want to delete this PC?')) {
+            await deletePC(id);
+            loadDashboardData(); // Refresh list
+        }
+    }
+});
+
 
 // Initial Page Load
 navigateTo(state.currentPage); 
