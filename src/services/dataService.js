@@ -25,4 +25,34 @@ export async function createPC(pcData) {
     }
 
     return data[0];
+}
+
+export async function updatePC(id, updates) {
+    const { data, error } = await supabase
+        .from('pcs')
+        .update(updates)
+        .eq('id', id)
+        .select();
+
+    if (error) {
+        console.error('Error updating PC:', error);
+        return null;
+    }
+
+    return data[0];
+}
+
+export async function getPCById(id) {
+    const { data, error } = await supabase
+        .from('pcs')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        console.error('Error fetching PC:', error);
+        return null;
+    }
+
+    return data;
 } 

@@ -1,4 +1,4 @@
-import { state, subscribe } from '../state/store.js';
+import { state, subscribe, setState } from '../state/store.js';
 
 function Dashboard() {
     const element = document.createElement('div');
@@ -20,7 +20,7 @@ function Dashboard() {
         }
         
         const pcItems = state.pcs.map(pc => `
-            <div class="pc-item">
+            <div class="pc-item" data-pc-id="${pc.id}" style="cursor: pointer;">
                 <div class="pc-info">
                     <h3>${pc.pc_number}</h3>
                     <p><strong>Company:</strong> ${pc.company}</p>
@@ -36,6 +36,20 @@ function Dashboard() {
                 ${pcItems}
             </div>
         `;
+        
+        // Add click handlers for PC items
+        element.querySelectorAll('.pc-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const pcId = item.dataset.pcId;
+                const selectedPC = state.pcs.find(pc => pc.id === pcId);
+                if (selectedPC) {
+                    setState({ 
+                        currentPage: 'pc-detail', 
+                        currentPC: selectedPC 
+                    });
+                }
+            });
+        });
     };
 
     // This component now subscribes to the store and re-renders its own content

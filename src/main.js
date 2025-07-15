@@ -3,10 +3,12 @@ import { state, setState, subscribe } from './state/store.js';
 import { getAllPCs, createPC } from './services/dataService.js';
 import Dashboard from './components/Dashboard.js';
 import PCForm from './components/PCForm.js';
+import PCDetail from './components/PCDetail.js';
 
 const routes = {
   dashboard: Dashboard,
   'pc-new': PCForm,
+  'pc-detail': PCDetail,
 };
 
 const appElement = document.getElementById('app');
