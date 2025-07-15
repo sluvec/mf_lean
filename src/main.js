@@ -28,15 +28,6 @@ function navigateTo(page) {
     }
 }
 
-// Handle navigation events
-document.querySelector('header nav').addEventListener('click', (e) => {
-  if (e.target.matches('[data-page]')) {
-    e.preventDefault();
-    const newPage = e.target.dataset.page;
-    setState({ currentPage: newPage });
-  }
-});
-
 // Listen for currentPage changes to navigate
 let currentPage = state.currentPage;
 subscribe(() => {
@@ -47,4 +38,16 @@ subscribe(() => {
 });
 
 // Initial Page Load
-navigateTo(state.currentPage); 
+navigateTo(state.currentPage);
+
+// Handle navigation events - moved to after DOM is loaded
+const navElement = document.querySelector('header nav');
+if (navElement) {
+    navElement.addEventListener('click', (e) => {
+        if (e.target.matches('[data-page]')) {
+            e.preventDefault();
+            const newPage = e.target.dataset.page;
+            setState({ currentPage: newPage });
+        }
+    });
+} 
