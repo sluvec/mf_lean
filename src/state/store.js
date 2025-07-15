@@ -3,6 +3,7 @@ const listeners = new Set();
 export const state = {
     currentPage: 'dashboard',
     currentPC: null,
+    currentQuote: null,
     pcs: [],
     quotes: [],
     activities: [],

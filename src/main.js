@@ -4,11 +4,13 @@ import { getAllPCs, createPC } from './services/dataService.js';
 import Dashboard from './components/Dashboard.js';
 import PCForm from './components/PCForm.js';
 import PCDetail from './components/PCDetail.js';
+import QuoteList from './components/QuoteList.js';
 
 const routes = {
   dashboard: Dashboard,
   'pc-new': PCForm,
   'pc-detail': PCDetail,
+  'quote-list': QuoteList,
 };
 
 const appElement = document.getElementById('app');

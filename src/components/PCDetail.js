@@ -26,6 +26,7 @@ function PCDetail() {
             <div class="pc-detail-header">
                 <h2>PC Details: ${currentPC.pc_number}</h2>
                 <div class="pc-actions">
+                    <button id="view-quotes-btn">View Quotes</button>
                     <button id="edit-pc-btn">Edit PC</button>
                     <button id="back-btn">Back to Dashboard</button>
                 </div>
@@ -36,6 +37,11 @@ function PCDetail() {
             </div>
         </div>
     `;
+
+    // Handle view quotes button
+    element.querySelector('#view-quotes-btn').addEventListener('click', () => {
+        setState({ currentPage: 'quote-list' });
+    });
 
     // Handle back button
     element.querySelector('#back-btn').addEventListener('click', () => {
