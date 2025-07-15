@@ -1,5 +1,6 @@
 // Trigger re-deployment
 import { state, setState, subscribe } from './state/store.js';
+import { getAllPCs } from './services/dataService.js';
 import Dashboard from './components/Dashboard.js';
 import PCForm from './components/PCForm.js';
 
@@ -10,24 +11,36 @@ const routes = {
 
 const appElement = document.getElementById('app');
 
-function render() {
-  const page = state.currentPage;
-  const component = routes[page] || Dashboard; // Default to Dashboard
-  appElement.innerHTML = ''; // Clear previous content
-  appElement.appendChild(component());
+function navigateTo(page) {
+    appElement.innerHTML = '';
+    const component = routes[page] || Dashboard;
+    appElement.appendChild(component());
+
+    if (page === 'dashboard') {
+        setState({ isLoading: true, pcs: [] });
+        getAllPCs().then(pcs => {
+            setState({ pcs: pcs, isLoading: false });
+        });
+    }
 }
 
-// Initial Render
-render();
-
-// Subscribe to state changes
-subscribe(render);
-
-// Handle navigation
+// Handle navigation events
 document.querySelector('header nav').addEventListener('click', (e) => {
   if (e.target.matches('[data-page]')) {
     e.preventDefault();
     const newPage = e.target.dataset.page;
     setState({ currentPage: newPage });
   }
-}); 
+});
+
+// Listen for currentPage changes to navigate
+let currentPage = state.currentPage;
+subscribe(() => {
+    if (state.currentPage !== currentPage) {
+        currentPage = state.currentPage;
+        navigateTo(currentPage);
+    }
+});
+
+// Initial Page Load
+navigateTo(state.currentPage); 
