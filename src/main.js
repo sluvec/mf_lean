@@ -11,16 +11,20 @@ const routes = {
 
 const appElement = document.getElementById('app');
 
+function loadDashboardData() {
+    setState({ isLoading: true });
+    getAllPCs().then(pcs => {
+        setState({ pcs: pcs, isLoading: false });
+    });
+}
+
 function navigateTo(page) {
     appElement.innerHTML = '';
     const component = routes[page] || Dashboard;
     appElement.appendChild(component());
 
     if (page === 'dashboard') {
-        setState({ isLoading: true, pcs: [] });
-        getAllPCs().then(pcs => {
-            setState({ pcs: pcs, isLoading: false });
-        });
+        loadDashboardData();
     }
 }
 
@@ -42,8 +46,13 @@ document.querySelector('header nav').addEventListener('click', (e) => {
     createPC(testPC).then(newPC => {
       if (newPC) {
         console.log('Test PC created:', newPC);
-        // Navigate to dashboard to see the result
-        setState({ currentPage: 'dashboard' });
+        // If we are already on the dashboard, just reload the data.
+        // Otherwise, navigate to it, which will trigger the data load.
+        if (state.currentPage === 'dashboard') {
+          loadDashboardData();
+        } else {
+          setState({ currentPage: 'dashboard' });
+        }
       }
     });
   }
