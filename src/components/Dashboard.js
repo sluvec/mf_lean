@@ -12,13 +12,7 @@ function Dashboard() {
             element.innerHTML = `<h2>Dashboard</h2><p>No PCs found. Create one!</p>`;
             return;
         }
-        const pcItems = state.pcs.map(pc => `
-            <li>
-                ${pc.pc_number} - ${pc.company}
-                <button data-id="${pc.id}" data-action="edit">Edit</button>
-                <button data-id="${pc.id}" data-action="delete">Delete</button>
-            </li>
-        `).join('');
+        const pcItems = state.pcs.map(pc => `<li>${pc.pc_number} - ${pc.company}</li>`).join('');
         element.innerHTML = `<h2>Dashboard</h2><ul>${pcItems}</ul>`;
     };
 

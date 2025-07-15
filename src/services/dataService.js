@@ -25,33 +25,4 @@ export async function createPC(pcData) {
     }
 
     return data[0];
-}
-
-export async function updatePC(id, updates) {
-    const { data, error } = await supabase
-        .from('pcs')
-        .update(updates)
-        .eq('id', id)
-        .select();
-
-    if (error) {
-        console.error('Error updating PC:', error);
-        return null;
-    }
-
-    return data[0];
-}
-
-export async function deletePC(id) {
-    const { error } = await supabase
-        .from('pcs')
-        .delete()
-        .eq('id', id);
-
-    if (error) {
-        console.error('Error deleting PC:', error);
-        return false;
-    }
-
-    return true;
 } 
