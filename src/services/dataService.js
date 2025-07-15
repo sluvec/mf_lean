@@ -11,4 +11,18 @@ export async function getAllPCs() {
     }
 
     return data;
+}
+
+export async function createPC(pcData) {
+    const { data, error } = await supabase
+        .from('pcs')
+        .insert([pcData])
+        .select();
+
+    if (error) {
+        console.error('Error creating PC:', error);
+        return null;
+    }
+
+    return data[0];
 } 

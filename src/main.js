@@ -1,6 +1,6 @@
 // Trigger re-deployment
 import { state, setState, subscribe } from './state/store.js';
-import { getAllPCs } from './services/dataService.js';
+import { getAllPCs, createPC } from './services/dataService.js';
 import Dashboard from './components/Dashboard.js';
 import PCForm from './components/PCForm.js';
 
@@ -30,6 +30,22 @@ document.querySelector('header nav').addEventListener('click', (e) => {
     e.preventDefault();
     const newPage = e.target.dataset.page;
     setState({ currentPage: newPage });
+  }
+  // Handle test seed button
+  if (e.target.matches('[data-test="seed"]')) {
+    e.preventDefault();
+    const testPC = {
+      pc_number: `PC-${Math.floor(Math.random() * 9000) + 1000}`,
+      company: 'Test Company Ltd',
+      project_name: 'Seeding Test'
+    };
+    createPC(testPC).then(newPC => {
+      if (newPC) {
+        console.log('Test PC created:', newPC);
+        // Navigate to dashboard to see the result
+        setState({ currentPage: 'dashboard' });
+      }
+    });
   }
 });
 
